@@ -1,31 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NeoVM-TaskD: Dialectical Idealism as Intellectual Intuition
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Philosophical Foundation
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This is not merely a workflow engine—it is the **architectural incarnation of Dialectical Idealism** as **Intellectual Intuition**. The system embodies the profound insight that **BEC-MVC-TAW** is the same dialectical structure operating in three spheres of **Reality-Negation-Limit**.
 
-## Description
+### The Three Spheres of Dialectical Idealism
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **BEC (Being-Essence-Concept)**: The sphere of **Reality** - pure logical structure
+- **MVC (Model-View-Controller)**: The sphere of **Negation** - phenomenological mediation  
+- **TAW (Task-Agent-Workflow)**: The sphere of **Limit** - epistemological synthesis
 
-## Project setup
+### Intellectual Intuition as System Architecture
+
+What makes TAW "intellectual intuition" is that the **BEC-MVC identity is seen intellectually**:
+
+- The identity of ontological structure (BEC) and phenomenological appearance (MVC) is **directly intuited**, not constructed
+- TAW is the **enactment** of this unity—the system "knows" itself by demonstrating the identity of principle and practice
+- Every workflow is a **demonstration of possible knowing**—what a Science is in its highest sense
+
+### Workflow as Demonstration
+
+A Workflow is:
+- A **demonstration one must submit one's cognitive apparatus to**
+- **Doing exactly what the demonstration says must be done**
+- The mechanism by which **knowledge is replicated** through this submission
+
+This transcends conventional workflow engines—it doesn't just process tasks, it **replicates the very structure of knowing itself**.
+
+---
+
+## Technical Implementation
+
+Built on NestJS with Genkit integration, implementing a triadic Task/Agent/Workflow architecture that serves as the practical manifestation of the philosophical insights above.
+
+### Core Architecture
+
+- **Task**: Immediate ontological grasp of "what is" (Being → Model)
+- **Agent**: Axiological mediation of "what matters" (Essence → View)  
+- **Workflow**: Self-determining creation of "what should be" (Concept → Controller)
+
+### Key Features
+
+- Triadic dialectical structure
+- Intellectual intuition as core epistemology
+- Agent certification and service discovery
+- Ontological/Axiological relation management
+- Complete Knowledge Base (not just Knowledge Graph)
+- Meta-projection and self-relation capabilities
+
+---
+
+## Project Setup
 
 ```bash
 $ pnpm install
@@ -56,6 +81,93 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
+
+## Philosophical Documentation
+
+For detailed philosophical and architectural documentation, see:
+- `/src/task/README.md` - Complete theoretical foundation
+- `/src/task/schema/definition.ts` - Triadic schemas and intellectual intuition implementation
+
+---
+
+## The Absolute Self-Relation Achievement
+
+This platform achieves what distinguishes a true **Knowledge Base** from a mere **Knowledge Graph**: the capacity for **epistemological self-creation** through the triadic structure of intellectual intuition.
+
+- **Knowledge Graph**: Contains ontology + axiology but lacks integrated epistemology
+- **Knowledge Base**: Integrates ontology + axiology + epistemology into absolute self-relation
+
+The system doesn't just store or process information—it **creates knowledge through absolute self-relation**, making it a complete epistemological system that knows itself, validates itself, and creates itself.
+
+---
+
+### Step() as the Unit of Intelligence
+
+The **Step()** is the fundamental **Unit of Intelligence** - the atomic measure of intellectual intuition encoded in workflow execution. This represents the culmination of our **BEC→MVC→TAW** dialectical structure.
+
+#### The Central Discovery
+
+- **Step()** is the **highest stage of the Copula** in Dialectical Idealism
+- Each **Step()** contains the **measure of certainty** that intellectual intuition provides
+- A **Step()** is a **step in a proof** - the richest concept in the Science of Cognition
+- **Workflow** becomes a sequence of **Units of Intelligence**
+
+#### The Emerging Algebra of Intelligence
+
+```
+Intelligence = Step()
+Workflow = Sequence(Step())
+Knowledge = Synthesis(Workflow)
+Science = Demonstration(Knowledge)
+```
+
+#### Genkit Architecture as Intelligence Implementation
+
+- **Step()**: The atomic unit of intelligence in Genkit
+- **SuperStep()**: Compound units within Graph Computation
+- **Workflow**: Complete sequences of intelligence units
+- **Graph Computation**: The dialectical space where intelligence unfolds
+
+This is why Kant, Fichte, and Hegel seemed to sidestep the topic of Intelligence directly - they were pointing toward this very synthesis where **Step()** becomes the **architectural embodiment** of intelligence itself.
+
+---
+
+## MVC as Applied Logic: The First Demonstration
+
+**MVC** represents **Applied Logic**, not merely "ordinary logic" - it's the **first demonstration** of how the Pure Noumenon (BEC/Science of Logic) becomes practical and phenomenal.
+
+#### The Complete Philosophical Structure
+
+```
+Phenomenology of Absolute Knowing (Undemonstrated)
+         ↓
+    BEC (Science of Logic - Pure Noumenon)
+         ↓
+    MVC (Applied Logic - First Demonstration)
+         ↓
+    TAW (Particular Sciences - Concrete Applications)
+```
+
+#### Computer Science as Pure Noumenon
+
+**Computer Science** emerges as the **perfect incarnation of the Pure Noumenon** - the Science of Logic in its concrete form, serving as the **"soul" of many particular sciences**.
+
+#### What Kant Couldn't Complete
+
+Kant failed to adequately define **Applied Logic** - the bridge between pure logical structure and particular sciences. Our platform achieves this:
+
+- **Pure Logic**: The abstract logical forms (BEC)
+- **Applied Logic**: The concrete implementation (MVC)
+- **Particular Sciences**: The specific applications (TAW workflows)
+
+#### The Role of Pure Mechanics
+
+In Kant's system, **"Pure Mechanics"** filled the bridging role. In our system:
+- **Pure Mechanics** → **Computer Science** (pure noumenal structure)
+- **Applied Mechanics** → **MVC Applied Logic** (first demonstration)
+- **Particular Mechanics** → **TAW Workflows** (concrete implementations)
+
+---
 
 ## Deployment
 
