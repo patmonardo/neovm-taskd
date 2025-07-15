@@ -2,29 +2,80 @@
  * Task Schema Module - Engineering Implementation Summary
  *
  * This module provides the complete set of engineering-focused Zod schemas
- * for the NeoVM-TaskD system, transforming the philosophical foundation
- * from definition.ts into practical, implementation-ready schemas.
+ * for the NeoVM-TaskD system, implementing the TAW-BEC-MVC architecture
+ * with Perfect A Priori Synthesis and Transcendental Logic structure.
  */
 
-// Core schemas
+// Core TAW-BEC-MVC Schemas
 export * from './task';
 export * from './agent';
 export * from './workflow';
 
-// Keep the philosophical foundation available for reference
-// Re-export definition schemas with explicit names to avoid conflicts
+// Specific schema exports for clarity
 export {
-  TaskDefinitionSchema as PhilosophicalTaskDefinitionSchema,
-  AgentDefinitionSchema as PhilosophicalAgentDefinitionSchema,
-  WorkflowDefinitionSchema as PhilosophicalWorkflowDefinitionSchema,
-  IntegratedPlatformSchema,
-  ArchitectonicReasonSchema,
-  type TaskDefinition as PhilosophicalTaskDefinition,
-  type AgentDefinition as PhilosophicalAgentDefinition,
-  type WorkflowDefinition as PhilosophicalWorkflowDefinition,
-  type IntegratedPlatform,
-  type ArchitectonicReason,
-} from './definition';
+  // Task Schemas
+  MorphismSchema,
+  TaskDefinitionSchema,
+  TaskExecutionContextSchema,
+  TaskEventSchema,
+  type Morphism,
+  type TaskDefinition,
+  type TaskExecutionContext,
+  type TaskEvent,
+} from './task';
+
+export {
+  // Agent Schemas
+  TopicMapSchema,
+  ViewSystemSchema,
+  PropertyReificationSchema,
+  AgentIdentitySchema,
+  AgentCapabilitiesSchema,
+  AgentOperationalStateSchema,
+  type TopicMap,
+  type ViewSystem,
+  type PropertyReification,
+} from './agent';
+
+export {
+  // Workflow Schemas
+  ActualRelationSchema,
+  OrganicUnitySchema,
+  WorkflowIdentitySchema,
+  WorkflowStepSchema,
+  type ActualRelation,
+  type OrganicUnity,
+} from './workflow';
+
+/**
+ * TAW-BEC-MVC Schema Architecture
+ *
+ * These schemas implement the complete systematic architecture:
+ *
+ * 1. **TAW Triad (Subjective)**
+ *    - Task: Morphism Libraries and Microflows
+ *    - Agent: Logic of Appearance, Dialectical Construction
+ *    - Workflow: Organic Unity
+ *
+ * 2. **BEC Triad (Objective)**
+ *    - Entity: NodePropertySchema (Tasks map to Entities)
+ *    - Property: Context definitions, Ontological Classes (Agents reify Properties)
+ *    - Relation: RelationshipPropertySchema (Workflows produce Actual Relations)
+ *
+ * 3. **Perfect A Priori Synthesis**
+ *    - Tasks composed of Morphism Libraries
+ *    - Agents perform Transcendental Marking
+ *    - Workflows achieve Organic Unity
+ *
+ * 4. **Transcendental Logic Structure**
+ *    - Morphisms as microflows (basic transformations)
+ *    - Agent TopicMap Construction (dialectical synthesis)
+ *    - Workflow Actual Relations (systematic completion)
+ *
+ * This engineering implementation preserves the complete philosophical
+ * foundation while providing practical, usable schemas for NestJS
+ * controllers and distributed system integration.
+ */
 
 /**
  * Schema Architecture Overview

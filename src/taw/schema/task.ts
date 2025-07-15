@@ -1,79 +1,49 @@
 import { z } from 'zod';
 
 /**
- * TaskDefinition - Core task schema for NeoVM-TaskD
+ * TaskDefinition - Simple/Immediate Model Schema
  *
- * Represents a computational unit of work that can be executed
- * by agents within workflows. Designed for NestJS controllers
- * and Genkit functional API integration.
+ * Tasks represent simple, immediate determinations of Models in MVC.
+ * They are "Being" - immediate, simple data structures that get
+ * presented to Purusha through the Workflow/Controller interface.
+ *
+ * Tasks are NOT complex - complexity is handled by Agents (behind the scenes)
+ * and Workflows (Controller/Monitor that informs Purusha).
  */
+
 export const TaskDefinitionSchema = z.object({
-  // Core Identity
+  // Core Identity - Simple/Immediate
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
 
-  // Classification
-  type: z.string(), // e.g., "computation", "workflow", "agent-task", "genkit-step"
+  // Simple Classification
+  type: z.string(), // e.g., "data", "computation", "query", "transformation"
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
 
-  // Structure & Dependencies
-  steps: z.array(z.string()).optional(), // Step/task IDs or names
-  dependencies: z.array(z.string()).optional(), // Task IDs this depends on
-  agentId: z.string().optional(), // Agent responsible for this task
-  workflowId: z.string().optional(), // Parent workflow, if any
+  // Simple Structure - Tasks are immediate/simple
+  data: z.record(z.any()).optional(), // Simple data payload
+  parameters: z.record(z.any()).optional(), // Simple parameters
 
-  // Execution State
+  // Minimal Dependencies (Tasks should be simple)
+  dependencies: z.array(z.string()).optional(), // Simple task dependencies
+
+  // Simple State - Being/Immediate
   status: z
-    .enum(['pending', 'running', 'completed', 'failed', 'cancelled'])
-    .default('pending'),
+    .enum(['created', 'ready', 'processing', 'completed', 'failed'])
+    .default('created'),
   result: z.any().optional(),
   error: z.string().optional(),
 
-  // Runtime Configuration
-  config: z.record(z.any()).optional(),
-  timeout: z.number().optional(), // Execution timeout in ms
-  retries: z.number().default(0), // Number of retry attempts
-  priority: z.number().default(0), // Execution priority
+  // Simple Input/Output
+  input: z.record(z.any()).optional(),
+  output: z.record(z.any()).optional(),
 
-  // Input/Output Schema
-  inputSchema: z.record(z.any()).optional(), // Expected input structure
-  outputSchema: z.record(z.any()).optional(), // Expected output structure
-
-  // Genkit Integration
-  genkitStep: z.string().optional(), // Reference to Genkit Step function
-  genkitFlow: z.string().optional(), // Reference to Genkit Flow
-
-  // Resource Requirements
-  resources: z
-    .object({
-      cpu: z.number().optional(), // CPU units required
-      memory: z.number().optional(), // Memory in MB
-      storage: z.number().optional(), // Storage in GB
-      gpu: z.boolean().optional(), // GPU requirement
-    })
-    .optional(),
-
-  // Metadata
-  createdAt: z
-    .number()
-    .optional()
-    .default(() => Date.now()),
-  updatedAt: z
-    .number()
-    .optional()
-    .default(() => Date.now()),
+  // Minimal Metadata
+  createdAt: z.number().default(() => Date.now()),
+  updatedAt: z.number().default(() => Date.now()),
   version: z.string().default('1.0.0'),
-  author: z.string().optional(),
-
-  // SystemD-style Service Properties
-  serviceType: z
-    .enum(['oneshot', 'simple', 'exec', 'forking', 'notify'])
-    .optional(),
-  restartPolicy: z
-    .enum(['no', 'always', 'on-failure', 'unless-stopped'])
-    .optional(),
 });
 
 export type TaskDefinition = z.infer<typeof TaskDefinitionSchema>;

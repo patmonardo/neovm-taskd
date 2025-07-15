@@ -1,17 +1,173 @@
 import { z } from 'zod';
 
 /**
- * Agent Schema - Engineering Implementation
+ * Agent Schema - MCP Server Infrastructure Manager
  *
- * Practical Zod schema for Agent entities, designed for:
- * - NestJS Controller integration
- * - Genkit functional API compatibility
- * - Distributed agent management
- * - Concrete class implementation
+ * Agents operate BEHIND THE SCENES, hidden from Purusha's direct view.
+ * They manage the MCP Server infrastructure that powers the system.
  *
- * This is the engineering realization of the philosophical Agent concept
- * from definition.ts, focused on implementation and API design.
+ * Key insights:
+ * - Agents manage Tools → Agents manage MCP Servers
+ * - Google MCP Database Toolbox = MCP on steroids
+ * - Agent is the hidden infrastructure layer
+ * - Agent performs complex operations invisibly
  */
+
+/**
+ * MCP Server Management - Agent's primary responsibility
+ */
+export const MCPServerSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.enum(['database', 'filesystem', 'api', 'tool', 'custom']),
+  endpoint: z.string(),
+  capabilities: z.array(z.string()).default([]),
+
+  // MCP Server configuration
+  mcpConfig: z.object({
+    version: z.string().default('1.0'),
+    transport: z.enum(['stdio', 'http', 'websocket']).default('stdio'),
+    authentication: z.record(z.string()).optional(),
+    toolbox: z.boolean().default(false), // Is this a "toolbox" server like Google's?
+  }),
+
+  // Server state
+  status: z.enum(['offline', 'starting', 'ready', 'error']).default('offline'),
+  healthCheck: z
+    .object({
+      lastCheck: z.number().optional(),
+      healthy: z.boolean().default(false),
+      latencyMs: z.number().optional(),
+    })
+    .optional(),
+});
+
+export type MCPServer = z.infer<typeof MCPServerSchema>;
+
+/**
+ * Tool Management - Agent manages sophisticated tooling
+ */
+export const ToolManagementSchema = z.object({
+  managedTools: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        type: z.enum(['mcp-tool', 'native-tool', 'api-tool', 'database-tool']),
+        mcpServerId: z.string().optional(), // Reference to MCP server providing this tool
+        capabilities: z.array(z.string()).default([]),
+        configuration: z.record(z.any()).optional(),
+      }),
+    )
+    .default([]),
+
+  toolboxServers: z.array(z.string()).default([]), // IDs of "toolbox" MCP servers
+
+  // Agent's tool orchestration
+  toolOrchestration: z
+    .object({
+      orchestrationStrategy: z.enum(['sequential', 'parallel', 'adaptive']),
+      failureHandling: z.enum(['abort', 'continue', 'retry']),
+      resourceOptimization: z.boolean().default(true),
+    })
+    .optional(),
+});
+
+export type ToolManagement = z.infer<typeof ToolManagementSchema>;
+
+/**
+ * TopicMap Construction - Agent's dialectical work
+ * Agents construct topic maps as dialectical synthesis
+ */
+export const TopicMapSchema = z.object({
+  id: z.string(),
+  topics: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        type: z.enum(['constructed', 'derived', 'mediating']),
+        dialecticalFunction: z.string().optional(),
+        properties: z.record(z.any()).optional(),
+      }),
+    )
+    .default([]),
+  topicRelations: z
+    .array(
+      z.object({
+        id: z.string(),
+        sourceTopicId: z.string(),
+        targetTopicId: z.string(),
+        relationType: z.string(),
+        dialecticalNature: z.string().optional(),
+      }),
+    )
+    .default([]),
+  constructionProcess: z.string().optional(), // How topics were constructed
+});
+
+export type TopicMap = z.infer<typeof TopicMapSchema>;
+
+/**
+ * View System - Agent's Logic of Appearance
+ * Agents maintain view systems for dialectical construction
+ */
+export const ViewSystemSchema = z.object({
+  id: z.string(),
+  agentId: z.string(),
+  viewDefinitions: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        perspectiveType: z.enum(['agential', 'dialectical', 'transcendental']),
+        appearanceLogic: z.string().optional(),
+        constructionRules: z.record(z.any()).optional(),
+      }),
+    )
+    .default([]),
+  dialecticalConstruction: z
+    .object({
+      constructionMethod: z.string(),
+      synthesisCapability: z.boolean().default(true),
+      mediatingFunction: z.string().optional(),
+    })
+    .optional(),
+});
+
+export type ViewSystem = z.infer<typeof ViewSystemSchema>;
+
+/**
+ * Property Reification - Agent's unique pointing to Agential View System
+ */
+export const PropertyReificationSchema = z.object({
+  agentialProperties: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        type: z.enum([
+          'ontological-class',
+          'transcendental-mark',
+          'dialectical-topic',
+        ]),
+        reificationMethod: z.string(),
+        agentialPointing: z.string(), // Unique pointing to AgentialViewSystem
+        persistenceLevel: z.enum(['session', 'agent-lifetime', 'permanent']),
+        ontologicalClass: z.record(z.any()).optional(),
+      }),
+    )
+    .default([]),
+  logicOfExperience: z
+    .object({
+      experienceRules: z.array(z.string()).default([]),
+      propertyMaintenance: z.string().optional(),
+      ontologicalCompetence: z.record(z.any()).optional(),
+    })
+    .optional(),
+});
+
+export type PropertyReification = z.infer<typeof PropertyReificationSchema>;
 
 /**
  * Agent Identity and Classification

@@ -6,11 +6,17 @@ import {
 } from './schema/task';
 
 /**
- * Task - Concrete implementation class
+ * Task - Simple/Immediate Model Implementation
  *
- * Represents a computational unit of work that can be executed
- * by agents within workflows. This is the engineering realization
- * of the philosophical Task concept, designed for NestJS and Genkit integration.
+ * Tasks represent simple, immediate determinations of Models in MVC.
+ * They are "Being" - immediate, simple data structures that get
+ * presented to Purusha through the Workflow/Controller interface.
+ *
+ * Key principles:
+ * - Simple and immediate (no complexity)
+ * - Pure model/data layer
+ * - No complex operations (handled by Agents)
+ * - Direct, straightforward state
  */
 @Injectable()
 export class Task {
@@ -20,7 +26,7 @@ export class Task {
     this._data = TaskDefinitionSchema.parse(data);
   }
 
-  // Core Properties
+  // Core Properties - Simple/Immediate
   get id(): string {
     return this._data.id;
   }
@@ -49,28 +55,20 @@ export class Task {
     return this._data.version;
   }
 
-  // Structure and Dependencies
-  get steps(): string[] {
-    return this._data.steps || [];
+  // Simple Structure - Being/Immediate
+  get data(): Record<string, any> | undefined {
+    return this._data.data;
+  }
+
+  get parameters(): Record<string, any> | undefined {
+    return this._data.parameters;
   }
 
   get dependencies(): string[] {
     return this._data.dependencies || [];
   }
 
-  get agentId(): string | undefined {
-    return this._data.agentId;
-  }
-
-  get workflowId(): string | undefined {
-    return this._data.workflowId;
-  }
-
-  get priority(): number {
-    return this._data.priority;
-  }
-
-  // Execution State
+  // Simple State - Being/Immediate
   get status() {
     return this._data.status;
   }
@@ -84,70 +82,30 @@ export class Task {
     return this._data.error;
   }
 
-  // Runtime Configuration
-  get config(): Record<string, any> | undefined {
-    return this._data.config;
+  // Simple Input/Output
+  get input(): Record<string, any> | undefined {
+    return this._data.input;
   }
 
-  get timeout(): number | undefined {
-    return this._data.timeout;
-  }
-
-  get retries(): number {
-    return this._data.retries;
-  }
-
-  // Input/Output Schema
-  get inputSchema(): Record<string, any> | undefined {
-    return this._data.inputSchema;
-  }
-
-  get outputSchema(): Record<string, any> | undefined {
-    return this._data.outputSchema;
-  }
-
-  // Genkit Integration
-  get genkitStep(): string | undefined {
-    return this._data.genkitStep;
-  }
-
-  get genkitFlow(): string | undefined {
-    return this._data.genkitFlow;
-  }
-
-  // Resource Requirements
-  get resources() {
-    return this._data.resources;
+  get output(): Record<string, any> | undefined {
+    return this._data.output;
   }
 
   // Metadata
   get createdAt(): number {
-    return this._data.createdAt || Date.now();
+    return this._data.createdAt;
   }
 
   get updatedAt(): number {
-    return this._data.updatedAt || Date.now();
-  }
-
-  get author(): string | undefined {
-    return this._data.author;
-  }
-
-  // SystemD-style Service Properties
-  get serviceType() {
-    return this._data.serviceType;
-  }
-
-  get restartPolicy() {
-    return this._data.restartPolicy;
+    return this._data.updatedAt;
   }
 
   // Raw data access
-  get data(): TaskType {
+  get rawData(): TaskType {
     return this._data;
   }
 
-  // State Management Methods
+  // Simple State Management Methods
   updateStatus(status: TaskType['status']): void {
     this._data.status = status;
     this._data.updatedAt = Date.now();
@@ -166,20 +124,28 @@ export class Task {
     this._data.updatedAt = Date.now();
   }
 
-  incrementRetry(): void {
-    this._data.retries += 1;
+  setData(data: Record<string, any>): void {
+    this._data.data = data;
     this._data.updatedAt = Date.now();
   }
 
-  // Validation and Transformation
+  setInput(input: Record<string, any>): void {
+    this._data.input = input;
+    this._data.updatedAt = Date.now();
+  }
+
+  setOutput(output: Record<string, any>): void {
+    this._data.output = output;
+    this._data.updatedAt = Date.now();
+  }
+
+  // Simple Validation and Creation
   static create(data: Partial<TaskType>): Task {
     const taskData: TaskType = {
       id: data.id || crypto.randomUUID(),
       name: data.name || 'Untitled Task',
-      type: data.type || 'computation',
-      status: 'pending',
-      retries: 0,
-      priority: 0,
+      type: data.type || 'data',
+      status: 'created',
       version: '1.0.0',
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -199,7 +165,7 @@ export class Task {
     return new Task(updatedData);
   }
 
-  // Event Creation
+  // Simple Event Creation
   createEvent(type: TaskEvent['type'], data?: any, source?: string): TaskEvent {
     return {
       id: crypto.randomUUID(),
@@ -212,23 +178,13 @@ export class Task {
     };
   }
 
-  // Genkit Integration Helpers
-  isGenkitTask(): boolean {
-    return !!(this._data.genkitStep || this._data.genkitFlow);
+  // Simple Utility Methods
+  isReady(): boolean {
+    return this.status === 'ready';
   }
 
-  // Resource Management
-  hasResourceRequirements(): boolean {
-    return !!this._data.resources;
-  }
-
-  getResourceRequirements() {
-    return this._data.resources;
-  }
-
-  // Utility Methods
-  isRunning(): boolean {
-    return this.status === 'running';
+  isProcessing(): boolean {
+    return this.status === 'processing';
   }
 
   isCompleted(): boolean {
@@ -239,15 +195,11 @@ export class Task {
     return this.status === 'failed';
   }
 
-  isPending(): boolean {
-    return this.status === 'pending';
+  isCreated(): boolean {
+    return this.status === 'created';
   }
 
-  isCancelled(): boolean {
-    return this.status === 'cancelled';
-  }
-
-  // Serialization
+  // Simple Serialization
   toJSON(): TaskType {
     return this._data;
   }

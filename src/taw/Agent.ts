@@ -1,38 +1,89 @@
 import { Injectable } from '@nestjs/common';
 import {
-  AgentSchema,
-  type Agent as AgentType,
-  type AgentEvent,
+  type TopicMap,
+  type ViewSystem,
+  type PropertyReification,
+  type MCPServer,
+  type ToolManagement,
 } from './schema/agent';
 
-// Simple health check type for agent monitoring
-type HealthStatus = 'healthy' | 'degraded' | 'unhealthy';
+// Agent operational status
+type AgentStatus = 'offline' | 'starting' | 'ready' | 'busy' | 'error';
 
-interface SimpleHealthCheck {
+interface AgentType {
+  // Identity
   id: string;
-  agentId: string;
-  timestamp: number;
-  status: HealthStatus;
-  checks: Record<string, boolean>;
-  details?: Record<string, unknown>;
+  name: string;
+  description?: string;
+  type: string;
+  category?: string;
+  version: string;
+  tags: string[];
+
+  // MCP Infrastructure Management
+  mcpServers: MCPServer[];
+  toolManagement: ToolManagement;
+
+  // TAW-BEC Capabilities
+  topicMaps: TopicMap[];
+  viewSystems: ViewSystem[];
+  propertyReification: PropertyReification;
+
+  // Operational state
+  status: AgentStatus;
+  lastActivity: number;
+  healthScore: number;
+
+  // Metadata
+  createdAt: number;
+  updatedAt: number;
 }
 
 /**
- * Agent - Concrete implementation class
+ * Agent - MCP Infrastructure Manager (Hidden Layer)
  *
- * Represents a computational actor/worker that can execute tasks.
- * This is the engineering realization of the philosophical Agent concept,
- * designed for NestJS and Genkit integration.
+ * Agents operate BEHIND THE SCENES, hidden from Purusha's direct view.
+ * They manage the MCP Server infrastructure that powers the system.
+ *
+ * Key responsibilities:
+ * - Manage MCP Servers (Google MCP Database Toolbox style)
+ * - Tool orchestration and management
+ * - TopicMap Construction (dialectical work)
+ * - Property Reification (ontological classes)
+ * - Hidden complex operations
  */
 @Injectable()
 export class Agent {
   private _data: AgentType;
 
-  constructor(data: AgentType) {
-    this._data = AgentSchema.parse(data);
+  constructor(data: Partial<AgentType>) {
+    // Initialize with defaults
+    this._data = {
+      id: data.id || crypto.randomUUID(),
+      name: data.name || 'Untitled Agent',
+      type: data.type || 'mcp-manager',
+      version: data.version || '1.0.0',
+      tags: data.tags || [],
+      mcpServers: data.mcpServers || [],
+      toolManagement: data.toolManagement || {
+        managedTools: [],
+        toolboxServers: [],
+      },
+      topicMaps: data.topicMaps || [],
+      viewSystems: data.viewSystems || [],
+      propertyReification: data.propertyReification || {
+        agentialProperties: [],
+      },
+      status: data.status || 'offline',
+      lastActivity: data.lastActivity || Date.now(),
+      healthScore: data.healthScore || 1.0,
+      createdAt: data.createdAt || Date.now(),
+      updatedAt: data.updatedAt || Date.now(),
+      ...data,
+    };
   }
 
-  // Core Properties
+  // Core Identity Properties
   get id(): string {
     return this._data.id;
   }
@@ -61,123 +112,56 @@ export class Agent {
     return this._data.tags;
   }
 
-  // Capabilities
-  get capabilities() {
-    return this._data.capabilities;
+  // MCP Infrastructure Management
+  get mcpServers(): MCPServer[] {
+    return this._data.mcpServers;
   }
 
-  get skills(): string[] {
-    return this._data.capabilities.skills;
+  get toolManagement(): ToolManagement {
+    return this._data.toolManagement;
   }
 
-  get tools(): string[] {
-    return this._data.capabilities.tools;
+  get managedTools() {
+    return this._data.toolManagement.managedTools;
   }
 
-  get models(): string[] {
-    return this._data.capabilities.models;
+  get toolboxServers(): string[] {
+    return this._data.toolManagement.toolboxServers;
   }
 
-  get languages(): string[] {
-    return this._data.capabilities.languages;
+  // TAW-BEC Capabilities
+  get topicMaps(): TopicMap[] {
+    return this._data.topicMaps;
   }
 
-  get protocols(): string[] {
-    return this._data.capabilities.protocols;
+  get viewSystems(): ViewSystem[] {
+    return this._data.viewSystems;
   }
 
-  get performance() {
-    return this._data.capabilities.performance;
+  get propertyReification(): PropertyReification {
+    return this._data.propertyReification;
   }
 
   // Operational State
-  get operationalState() {
-    return this._data.operationalState;
+  get status(): AgentStatus {
+    return this._data.status;
   }
 
-  get status() {
-    return this._data.operationalState.status;
+  get lastActivity(): number {
+    return this._data.lastActivity;
   }
 
-  get availability(): number {
-    return this._data.operationalState.availability;
-  }
-
-  get loadFactor(): number | undefined {
-    return this._data.operationalState.loadFactor;
-  }
-
-  get activeTasks(): string[] {
-    return this._data.operationalState.activeTasks;
-  }
-
-  get queuedTasks(): string[] {
-    return this._data.operationalState.queuedTasks;
-  }
-
-  get healthScore(): number | undefined {
-    return this._data.operationalState.healthScore;
-  }
-
-  get lastHeartbeat(): number | undefined {
-    return this._data.operationalState.lastHeartbeat;
-  }
-
-  // Configuration
-  get configuration() {
-    return this._data.configuration;
-  }
-
-  // Genkit Integration
-  get genkit() {
-    return this._data.genkit;
-  }
-
-  get genkitAgentId(): string | undefined {
-    return this._data.genkit?.genkitAgentId;
-  }
-
-  get genkitFlows(): string[] {
-    return this._data.genkit?.flows || [];
-  }
-
-  get genkitTools() {
-    return this._data.genkit?.tools || [];
-  }
-
-  get aiConfig() {
-    return this._data.genkit?.aiConfig;
-  }
-
-  // Metrics
-  get metrics() {
-    return this._data.metrics;
+  get healthScore(): number {
+    return this._data.healthScore;
   }
 
   // Metadata
-  get metadata() {
-    return this._data.metadata;
-  }
-
   get createdAt(): number {
-    return this._data.metadata.createdAt;
+    return this._data.createdAt;
   }
 
   get updatedAt(): number {
-    return this._data.metadata.updatedAt;
-  }
-
-  get createdBy(): string | undefined {
-    return this._data.metadata.createdBy;
-  }
-
-  get labels(): Record<string, string> | undefined {
-    return this._data.metadata.labels;
-  }
-
-  // Security
-  get security() {
-    return this._data.security;
+    return this._data.updatedAt;
   }
 
   // Raw data access
@@ -185,341 +169,166 @@ export class Agent {
     return this._data;
   }
 
-  // State Management Methods
-  updateStatus(status: AgentType['operationalState']['status']): void {
-    this._data.operationalState.status = status;
-    this._data.operationalState.lastHeartbeat = Date.now();
-    this._data.metadata.updatedAt = Date.now();
-
-    // Add audit log entry
-    this._data.metadata.auditLog.push({
-      timestamp: Date.now(),
-      action: `status_changed_to_${status}`,
-    });
+  // MCP Server Management Methods
+  addMCPServer(server: MCPServer): void {
+    this._data.mcpServers.push(server);
+    this._data.updatedAt = Date.now();
   }
 
-  updateAvailability(availability: number): void {
-    this._data.operationalState.availability = Math.max(
-      0,
-      Math.min(1, availability),
+  removeMCPServer(serverId: string): void {
+    this._data.mcpServers = this._data.mcpServers.filter(
+      (s) => s.id !== serverId,
     );
-    this._data.metadata.updatedAt = Date.now();
+    this._data.updatedAt = Date.now();
   }
 
-  updateLoadFactor(loadFactor: number): void {
-    this._data.operationalState.loadFactor = Math.max(0, loadFactor);
-    this._data.metadata.updatedAt = Date.now();
+  getMCPServer(serverId: string): MCPServer | undefined {
+    return this._data.mcpServers.find((s) => s.id === serverId);
   }
 
-  updateHealthScore(healthScore: number): void {
-    this._data.operationalState.healthScore = Math.max(
-      0,
-      Math.min(1, healthScore),
+  getMCPServersByType(type: MCPServer['type']): MCPServer[] {
+    return this._data.mcpServers.filter((s) => s.type === type);
+  }
+
+  getToolboxServers(): MCPServer[] {
+    return this._data.mcpServers.filter((s) => s.mcpConfig.toolbox);
+  }
+
+  // Tool Management Methods
+  addManagedTool(tool: ToolManagement['managedTools'][0]): void {
+    this._data.toolManagement.managedTools.push(tool);
+    this._data.updatedAt = Date.now();
+  }
+
+  removeManagedTool(toolId: string): void {
+    this._data.toolManagement.managedTools =
+      this._data.toolManagement.managedTools.filter((t) => t.id !== toolId);
+    this._data.updatedAt = Date.now();
+  }
+
+  getToolsByType(type: string): ToolManagement['managedTools'] {
+    return this._data.toolManagement.managedTools.filter(
+      (t) => t.type === type,
     );
-    this._data.metadata.updatedAt = Date.now();
   }
 
-  heartbeat(): void {
-    this._data.operationalState.lastHeartbeat = Date.now();
-    this._data.metadata.updatedAt = Date.now();
+  // TopicMap Construction Methods (Dialectical Work)
+  addTopicMap(topicMap: TopicMap): void {
+    this._data.topicMaps.push(topicMap);
+    this._data.updatedAt = Date.now();
   }
 
-  assignTask(taskId: string): void {
-    if (!this._data.operationalState.activeTasks.includes(taskId)) {
-      this._data.operationalState.activeTasks.push(taskId);
-      this._data.metadata.updatedAt = Date.now();
+  getTopicMap(topicMapId: string): TopicMap | undefined {
+    return this._data.topicMaps.find((tm) => tm.id === topicMapId);
+  }
+
+  constructTopic(topicMapId: string, topic: TopicMap['topics'][0]): void {
+    const topicMap = this.getTopicMap(topicMapId);
+    if (topicMap) {
+      topicMap.topics.push(topic);
+      this._data.updatedAt = Date.now();
     }
   }
 
-  unassignTask(taskId: string): void {
-    const index = this._data.operationalState.activeTasks.indexOf(taskId);
-    if (index > -1) {
-      this._data.operationalState.activeTasks.splice(index, 1);
-      this._data.metadata.updatedAt = Date.now();
-    }
+  // View System Management (Logic of Appearance)
+  addViewSystem(viewSystem: ViewSystem): void {
+    this._data.viewSystems.push(viewSystem);
+    this._data.updatedAt = Date.now();
   }
 
-  queueTask(taskId: string): void {
-    if (!this._data.operationalState.queuedTasks.includes(taskId)) {
-      this._data.operationalState.queuedTasks.push(taskId);
-      this._data.metadata.updatedAt = Date.now();
-    }
+  getViewSystem(viewSystemId: string): ViewSystem | undefined {
+    return this._data.viewSystems.find((vs) => vs.id === viewSystemId);
   }
 
-  dequeueTask(taskId: string): void {
-    const index = this._data.operationalState.queuedTasks.indexOf(taskId);
-    if (index > -1) {
-      this._data.operationalState.queuedTasks.splice(index, 1);
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  addLabel(key: string, value: string): void {
-    if (!this._data.metadata.labels) {
-      this._data.metadata.labels = {};
-    }
-    this._data.metadata.labels[key] = value;
-    this._data.metadata.updatedAt = Date.now();
-  }
-
-  removeLabel(key: string): void {
-    if (this._data.metadata.labels) {
-      delete this._data.metadata.labels[key];
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  // Capability Management
-  hasSkill(skill: string): boolean {
-    return this._data.capabilities.skills.includes(skill);
-  }
-
-  hasTool(tool: string): boolean {
-    return this._data.capabilities.tools.includes(tool);
-  }
-
-  hasModel(model: string): boolean {
-    return this._data.capabilities.models.includes(model);
-  }
-
-  addSkill(skill: string): void {
-    if (!this._data.capabilities.skills.includes(skill)) {
-      this._data.capabilities.skills.push(skill);
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  removeSkill(skill: string): void {
-    const index = this._data.capabilities.skills.indexOf(skill);
-    if (index > -1) {
-      this._data.capabilities.skills.splice(index, 1);
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  addTool(tool: string): void {
-    if (!this._data.capabilities.tools.includes(tool)) {
-      this._data.capabilities.tools.push(tool);
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  removeTool(tool: string): void {
-    const index = this._data.capabilities.tools.indexOf(tool);
-    if (index > -1) {
-      this._data.capabilities.tools.splice(index, 1);
-      this._data.metadata.updatedAt = Date.now();
-    }
-  }
-
-  // Performance Metrics
-  updatePerformanceMetrics(
-    metrics: Partial<NonNullable<AgentType['metrics']>['performance']>,
+  // Property Reification Methods
+  addAgentialProperty(
+    property: PropertyReification['agentialProperties'][0],
   ): void {
-    if (!this._data.metrics) {
-      this._data.metrics = {
-        performance: {
-          totalTasksExecuted: 0,
-          totalTasksSuccessful: 0,
-          totalTasksFailed: 0,
-          uptimeSeconds: 0,
-        },
-        resources: {
-          totalNetworkBytesTransferred: 0,
-          totalStorageBytesUsed: 0,
-        },
-        cost: {
-          totalCostUSD: 0,
-        },
-      };
-    }
-
-    this._data.metrics.performance = {
-      ...this._data.metrics.performance,
-      ...metrics,
-    };
-    this._data.metadata.updatedAt = Date.now();
+    this._data.propertyReification.agentialProperties.push(property);
+    this._data.updatedAt = Date.now();
   }
 
-  incrementTaskCount(successful: boolean): void {
-    if (!this._data.metrics) {
-      this._data.metrics = {
-        performance: {
-          totalTasksExecuted: 0,
-          totalTasksSuccessful: 0,
-          totalTasksFailed: 0,
-          uptimeSeconds: 0,
-        },
-        resources: {
-          totalNetworkBytesTransferred: 0,
-          totalStorageBytesUsed: 0,
-        },
-        cost: {
-          totalCostUSD: 0,
-        },
-      };
-    }
-
-    this._data.metrics.performance.totalTasksExecuted += 1;
-    if (successful) {
-      this._data.metrics.performance.totalTasksSuccessful += 1;
-    } else {
-      this._data.metrics.performance.totalTasksFailed += 1;
-    }
-    this._data.metadata.updatedAt = Date.now();
+  getOntologicalProperties(): PropertyReification['agentialProperties'] {
+    return this._data.propertyReification.agentialProperties.filter(
+      (p) => p.type === 'ontological-class',
+    );
   }
 
-  // Validation and Transformation
-  static create(data: Partial<AgentType>): Agent {
-    const agentData: AgentType = {
-      id: data.id || crypto.randomUUID(),
-      name: data.name || 'Untitled Agent',
-      type: data.type || 'ai-worker',
-      version: '1.0.0',
-      tags: [],
-      capabilities: {
-        skills: [],
-        tools: [],
-        models: [],
-        languages: [],
-        protocols: [],
-        formats: [],
-        certifications: [],
-      },
-      operationalState: {
-        status: 'offline',
-        availability: 1.0,
-        activeTasks: [],
-        queuedTasks: [],
-      },
-      metadata: {
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        auditLog: [],
-      },
-      ...data,
-    };
-
-    return new Agent(agentData);
+  getTranscendentalMarks(): PropertyReification['agentialProperties'] {
+    return this._data.propertyReification.agentialProperties.filter(
+      (p) => p.type === 'transcendental-mark',
+    );
   }
 
-  update(updates: Partial<AgentType>): Agent {
-    const updatedData = {
-      ...this._data,
-      ...updates,
-      metadata: {
-        ...this._data.metadata,
-        ...updates.metadata,
-        updatedAt: Date.now(),
-      },
-    };
-
-    return new Agent(updatedData);
+  // State Management
+  updateStatus(status: AgentStatus): void {
+    this._data.status = status;
+    this._data.lastActivity = Date.now();
+    this._data.updatedAt = Date.now();
   }
 
-  // Health Check
-  createHealthCheck(): SimpleHealthCheck {
-    return {
-      id: crypto.randomUUID(),
-      agentId: this.id,
-      timestamp: Date.now(),
-      status: this.determineHealthStatus(),
-      checks: this.runHealthChecks(),
-      details: {
-        version: this.version,
-        uptime: this.getUptime(),
-      },
-    };
+  updateHealthScore(score: number): void {
+    this._data.healthScore = Math.max(0, Math.min(1, score));
+    this._data.updatedAt = Date.now();
   }
 
-  private determineHealthStatus(): HealthStatus {
-    if (this.status === 'error') return 'unhealthy';
-    if (this.status === 'maintenance') return 'degraded';
-    if (this.status === 'overloaded') return 'degraded';
-    if (this.healthScore !== undefined && this.healthScore < 0.5)
-      return 'unhealthy';
-    if (this.healthScore !== undefined && this.healthScore < 0.8)
-      return 'degraded';
-    return 'healthy';
-  }
-
-  private runHealthChecks(): Record<string, boolean> {
-    const checks: Record<string, boolean> = {};
-
-    // Basic status check
-    checks.status =
-      this.status === 'idle' ||
-      this.status === 'busy' ||
-      this.status === 'starting';
-
-    // Load factor check
-    if (this.loadFactor !== undefined) {
-      checks.load_factor = this.loadFactor <= 1;
-    }
-
-    // Heartbeat check
-    const heartbeatAge = this.lastHeartbeat
-      ? Date.now() - this.lastHeartbeat
-      : undefined;
-    if (heartbeatAge !== undefined) {
-      checks.heartbeat = heartbeatAge < 60000; // 1 minute
-    }
-
-    return checks;
-  }
-
-  private getUptime(): number {
-    return Date.now() - this.createdAt;
-  }
-
-  // Event Creation
-  createEvent(
-    type: AgentEvent['type'],
-    data?: Record<string, any>,
-    source?: string,
-  ): AgentEvent {
-    return {
-      id: crypto.randomUUID(),
-      agentId: this.id,
-      type,
-      timestamp: Date.now(),
-      data,
-      source,
-      severity: type === 'error' ? 'error' : 'info',
-    };
-  }
-
-  // Genkit Integration Helpers
-  isGenkitAgent(): boolean {
-    return !!this._data.genkit?.genkitAgentId;
-  }
-
-  getGenkitConfig(): Record<string, any> {
-    return this._data.genkit?.aiConfig || {};
+  recordActivity(): void {
+    this._data.lastActivity = Date.now();
+    this._data.updatedAt = Date.now();
   }
 
   // Utility Methods
   isOnline(): boolean {
-    return ['idle', 'busy'].includes(this.status);
+    return this.status === 'ready' || this.status === 'busy';
   }
 
-  isAvailable(): boolean {
-    return this.status === 'idle' && this.availability > 0;
+  isOffline(): boolean {
+    return this.status === 'offline';
   }
 
-  isBusy(): boolean {
-    return this.status === 'busy';
+  hasError(): boolean {
+    return this.status === 'error';
   }
 
-  isOverloaded(): boolean {
-    return this.status === 'overloaded';
+  isHealthy(): boolean {
+    return this.healthScore > 0.7;
   }
 
-  canAcceptTask(): boolean {
-    return (
-      this.isAvailable() &&
-      this.activeTasks.length < (this.performance?.maxConcurrentTasks || 1)
+  // MCP Infrastructure Queries
+  getMCPServerCount(): number {
+    return this._data.mcpServers.length;
+  }
+
+  getActiveMCPServers(): MCPServer[] {
+    return this._data.mcpServers.filter((s) => s.status === 'ready');
+  }
+
+  getManagedToolCount(): number {
+    return this._data.toolManagement.managedTools.length;
+  }
+
+  // Hidden Operations (from Purusha perspective)
+  performHiddenOperation(operationName: string, mcpServerIds: string[]): void {
+    // This represents complex operations that happen behind the scenes
+    // Purusha never sees these directly
+    this.recordActivity();
+    console.log(
+      `Agent ${this.id} performing hidden operation: ${operationName} with MCP servers: ${mcpServerIds.join(', ')}`,
     );
+  }
+
+  // Factory Methods
+  static create(data: Partial<AgentType>): Agent {
+    return new Agent(data);
+  }
+
+  static createMCPManager(name: string, mcpServers: MCPServer[] = []): Agent {
+    return new Agent({
+      name,
+      type: 'mcp-manager',
+      mcpServers,
+      status: 'ready',
+    });
   }
 
   // Serialization
@@ -528,6 +337,6 @@ export class Agent {
   }
 
   toString(): string {
-    return `Agent(${this.id}): ${this.name} [${this.status}]`;
+    return `Agent(${this.id}): ${this.name} [${this.status}] - ${this.getMCPServerCount()} MCP servers`;
   }
 }

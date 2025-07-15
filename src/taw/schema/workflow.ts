@@ -1,17 +1,83 @@
 import { z } from 'zod';
 
 /**
- * Workflow Schema - Engineering Implementation
+ * Workflow Schema - Controller/Monitor that Informs Purusha
  *
- * Practical Zod schema for Workflow entities, designed for:
- * - NestJS Controller integration
- * - Genkit functional API compatibility
- * - Distributed workflow orchestration
- * - Concrete class implementation
+ * Workflows are the Controller/Monitor interface that presents
+ * information to Purusha. They are "Sattva" - what gets presented
+ * to consciousness as the organized, systematic view.
  *
- * This is the engineering realization of the philosophical Workflow concept
- * from definition.ts, focused on implementation and API design.
+ * Key insights:
+ * - Workflow = Controller/Monitor (not just orchestration)
+ * - Workflow informs Purusha (presents to consciousness)
+ * - Workflow as Sattva = organized presentation layer
+ * - Behind this interface, Agents manage MCP infrastructure
+ * - Tasks provide simple/immediate Model data
  */
+
+/**
+ * Purusha Interface - What gets presented to consciousness
+ */
+export const PurushaInterfaceSchema = z.object({
+  id: z.string(),
+  workflowId: z.string(),
+
+  // What Purusha sees/knows
+  presentation: z.object({
+    currentState: z.string(),
+    availableActions: z.array(z.string()).default([]),
+    systemStatus: z.enum(['idle', 'processing', 'completed', 'error']),
+    progressIndicator: z.number().min(0).max(1).optional(), // 0.0 to 1.0
+  }),
+
+  // Sattva presentation layer
+  sattvaPresentation: z.object({
+    organizedView: z.record(z.any()).optional(), // Organized systematic view
+    clarity: z.enum(['clear', 'partial', 'obscured']).default('clear'),
+    completeness: z.number().min(0).max(1).default(1), // How complete the view is
+    sattvicQuality: z.boolean().default(true), // Is this truly Sattva (clear/organized)?
+  }),
+
+  // Monitor/Controller interface
+  controlInterface: z.object({
+    commands: z.array(z.string()).default([]),
+    monitoring: z.record(z.any()).optional(),
+    feedback: z.string().optional(),
+    controlLevel: z.enum(['basic', 'advanced', 'expert']).default('basic'),
+  }),
+});
+
+export type PurushaInterface = z.infer<typeof PurushaInterfaceSchema>;
+
+/**
+ * Hidden Infrastructure - What Purusha does NOT see
+ * (This is managed by Agents behind the scenes)
+ */
+export const HiddenInfrastructureSchema = z.object({
+  workflowId: z.string(),
+
+  // Hidden Agent operations
+  agentOperations: z
+    .array(
+      z.object({
+        agentId: z.string(),
+        operation: z.string(),
+        mcpServers: z.array(z.string()).default([]), // MCP servers involved
+        hidden: z.boolean().default(true), // Always hidden from Purusha
+      }),
+    )
+    .default([]),
+
+  // Infrastructure complexity (hidden)
+  infrastructureComplexity: z.object({
+    mcpServerCount: z.number().default(0),
+    toolCount: z.number().default(0),
+    complexOperations: z.array(z.string()).default([]),
+    hiddenFromPurusha: z.boolean().default(true),
+  }),
+});
+
+export type HiddenInfrastructure = z.infer<typeof HiddenInfrastructureSchema>;
 
 /**
  * Workflow Identity and Classification
